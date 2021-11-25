@@ -123,7 +123,7 @@ public class Utilidades {
 	 * @param connArg
 	 */
 	public static void closeConnection(Connection connArg) {
-		System.out.println("Releasing all open resources ...");
+		System.out.println("\nReleasing all open resources ...");
 		try {
 			if (connArg != null) {
 				connArg.close();

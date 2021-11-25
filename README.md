@@ -22,3 +22,9 @@ más limpio, y más corto y legible.
 Este método nos aporta metadatos de la tabla LIBROS, es decir información sobre la tabla, y no sobre su contenido.
 
 En este caso a partir de una consulta select conseguimos el nombre de las diferentes columnas (campos)que componen la tabla LIBROS.
+
+## Captura de la ejecución de los diferentes métodos
+
+Los ejercicios de la BD Cafes se han hecho con h2, y los de los Libros con SQLite
+
+![Captura ejecución método Main](resources/Captura.PNG)

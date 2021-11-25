@@ -45,7 +45,8 @@ public class Main {
 		    for(String campo :libros.getCamposLibro()) {
 		    	System.out.print(campo+", ");
 		    }
-		    
+		    //Cierre de conexion libros
+		    libros.cerrar();
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
 			}
