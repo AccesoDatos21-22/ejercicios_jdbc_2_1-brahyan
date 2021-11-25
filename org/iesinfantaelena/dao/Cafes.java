@@ -286,6 +286,55 @@ public class Cafes   {
 		 */
 		public void cafesPorProveedor(int provid) throws AccesoDatosException {
 		
+			ResultSet rs = null;PreparedStatement ps = null;
+		
+			try {
+				//Se establece conexion con la base de datos
+				//con = new Utilidades().getConnection();
+				// Creacion de la consulta con parametros
+				ps = con.prepareStatement(SEARCH_CAFES_PROVEEDOR);
+				ps.setInt(1, provid);
+				//Obtencion de resultado de la query
+				rs = ps.executeQuery();
+				//Lectura de las diferentes columnas recuperadas
+				while (rs.next()) {
+					//info cafes
+					String CAF_NOMBRE = rs.getString("CAF_NOMBRE");
+					int PROV_ID = rs.getInt("PROV_ID");
+					float PRECIO = rs.getFloat("PRECIO");
+					int VENTAS = rs.getInt("VENTAS");
+					int TOTAL = rs.getInt("TOTAL");
+					//info proveedor
+					String PROV_NOMBRE = rs.getString("PROV_NOMBRE");
+					String CALLE = rs.getString("CALLE");
+					String CIUDAD = rs.getString("CIUDAD");
+					String PAIS = rs.getString("PAIS");
+					int CP = rs.getInt("CP");
+					//Muestra informacion obtenida de la base de datos
+					String infoCafe =  CAF_NOMBRE+";"+ PROV_ID+ ";"+PRECIO+";"+VENTAS+";"+TOTAL;
+					String infoProveedor = PROV_NOMBRE+";"+CALLE+";"+CIUDAD+";"+PAIS+";"+CP;
+					System.out.println("informacion del cafe: "+infoCafe+"\nInformacion proveedor: "+infoProveedor);
+					
+				}
+
+			} catch (SQLException sqle) {
+				
+				Utilidades.printSQLException(sqle);
+				throw new AccesoDatosException("Fallo en la recuperacion de la informacion de la base de datos");
+			} catch (Exception e) { //Errores imprevistos
+				
+				System.err.println(e.getMessage());
+			}finally {
+					//Libera todos los recursos
+				try {
+					//if(con!=null) con.close();
+					if(ps!=null) ps.close();
+					if(rs!=null) rs.close();
+				} catch (SQLException e) {
+					System.err.println("Error: " + e.getMessage());
+				}
+
+			}
 
 		}
 }
