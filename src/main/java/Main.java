@@ -29,6 +29,17 @@ public class Main {
 		    libros.anadirLibro(new Libro(12453, "Minix", "Stallings", "Informática", 345,4));
 		    libros.anadirLibro(new Libro(1325, "Linux", "Richard Stallman", "FSF", 168,10));
 		    libros.anadirLibro(new Libro(1725, "Java", "Juan Garcia", "Programación", 245,9));
+		    //Prueba borrar libro
+		    libros.borrar(new Libro(12453, "Minix", "Stallings", "Informática", 345,4));
+		    //Prueba actulizar copias
+		    libros.actualizarCopias(new Libro(1725, "Java", "Juan Garcia", "Programación", 245,5000));
+		    //Prueba verCatalogo
+		    System.out.println("\nLista de todos los libros de la BD:");
+		    for( Libro libro : libros.verCatalogo() ) {
+		    	System.out.println(libro);
+		    }
+		    //Prueba obtenerLibro
+		    libros.obtenerLibro(1725);
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
 			}

@@ -6,12 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import iesinfantaelena.utils.Utilidades;
 import iesinfantaelena.modelo.*;
-
-
 
 
 /**
@@ -31,6 +30,9 @@ public class Libros {
 			+ " constraint isbn_pk primary key (isbn));";
 	private static final String INSERT_LIBRO = "insert into LIBROS values (?,?,?,?,?,?)";
 	private static final String DELETE_LIBRO = "delete from LIBROS where isbn=?";
+	private static final String UPDATE_COPIAS_LIBRO = "update LIBROS set copias=? where isbn=?";
+	private static final String SELECT_ALL_LIBROS = "select * from LIBROS";
+	private static final String SELECT_LIBRO = "select * from LIBROS where isbn=?";
 	//Variables de instancia
 	private Connection con;
 	private Statement stmt;
@@ -110,7 +112,29 @@ public class Libros {
 	
 	public List<Libro> verCatalogo() throws AccesoDatosException {
 	
-		return null;
+		ArrayList<Libro> listaLibros = new ArrayList<Libro>();
+		try {
+			//Obtenemos resultset con las columnas a partir de la consulta
+			stmt = con.createStatement();
+			rs = stmt.executeQuery(SELECT_ALL_LIBROS);
+			//recorremos el resultset para agregar los libros a la lista
+			while(rs.next()) {
+				int isbn = rs.getInt(1);
+				String titulo = rs.getString(2);
+				String autor = rs.getString(3);
+				String editorial = rs.getString(4);
+				int paginas = rs.getInt(5);
+				int copias = rs.getInt(6);
+				
+				listaLibros.add(new Libro(isbn,titulo,autor,editorial,paginas,copias));
+			}
+		}catch (SQLException e) {
+			Utilidades.printSQLException(e);
+			throw new AccesoDatosException("Error al recuperar la tabla LIBROS");
+		}finally {
+			liberar();
+		}
+		return listaLibros;
 
 	}
 
@@ -123,6 +147,22 @@ public class Libros {
 	
 	public void actualizarCopias(Libro libro) throws AccesoDatosException {
 		
+		try {
+			//Preparacion de la actualizacion
+			pstmt = con.prepareStatement(UPDATE_COPIAS_LIBRO);
+			pstmt.setInt(1, libro.getCopias());
+			pstmt.setInt(2, libro.getISBN());
+			//Ejecucion de la actualizacion
+			int rowsAffected = pstmt.executeUpdate();
+			if(rowsAffected>0)
+				System.out.println("\nlas copias del libro: "+libro.getTitulo()+" se actualizaron correctamente");
+		}catch (SQLException e) {
+			Utilidades.printSQLException(e);
+			Utilidades.printSQLException(e);
+			throw new AccesoDatosException("Error al modificar las copias del libro: "+libro.getTitulo());
+		}finally {
+			liberar();
+		}
 	}
 
 	
@@ -152,10 +192,10 @@ public class Libros {
 			int rowAffected = pstmt.executeUpdate();
 			//Si se realiza insercion se informa al usuario
 			if(rowAffected>0)
-				System.out.println("El libro "+libro.getTitulo()+" se inserto correctamente");
+				System.out.println("\nEl libro "+libro.getTitulo()+" se inserto correctamente");
 		}catch (SQLException e) {
 			Utilidades.printSQLException(e);
-			throw new AccesoDatosException("Error al insertar libro") ;
+			throw new AccesoDatosException("Error al insertar el libro: "+libro.getTitulo()) ;
 		}finally {
 			liberar();
 		}
@@ -170,6 +210,20 @@ public class Libros {
 
 	public void borrar(Libro libro) throws AccesoDatosException {
 		
+		try {
+			//Se establece el libro a borrar
+			pstmt = con.prepareStatement(DELETE_LIBRO);
+			pstmt.setInt(1, libro.getISBN());
+			//Se ejecuta el borrado
+			int rowsAffected = pstmt.executeUpdate();
+			if (rowsAffected>0)
+				System.out.println("\nEl libro: "+libro.getTitulo()+" se ha BORRADO con exito");
+		} catch (SQLException e) {
+			Utilidades.printSQLException(e);
+			throw new AccesoDatosException("Error al borrar el libro: "+libro.getTitulo());
+		}finally {
+			liberar();
+		}
 		
 	}
 	
@@ -186,11 +240,29 @@ public class Libros {
 
 
 	public void obtenerLibro(int ISBN) throws AccesoDatosException {
-		
+		try {
+			//Obtenemos resultset con las columnas del libro con el ISBN pasado por parametro
+			pstmt = con.prepareStatement(SELECT_LIBRO);
+			pstmt.setInt(1, ISBN);
+			rs = pstmt.executeQuery();
+			//recorremos el resultset para agregar los libros a la lista
+			while(rs.next()) {
+				int isbn = rs.getInt(1);
+				String titulo = rs.getString(2);
+				String autor = rs.getString(3);
+				String editorial = rs.getString(4);
+				int paginas = rs.getInt(5);
+				int copias = rs.getInt(6);
+				//Mostramos la informacion obtenida
+				System.out.println("\nInformacion del libro buscado con ISBN: "+ISBN);
+				System.out.println(new Libro(isbn,titulo,autor,editorial,paginas,copias));
+			}
+		}catch (SQLException e) {
+			Utilidades.printSQLException(e);
+			throw new AccesoDatosException("\nNo se ha podido recuperar la informacion del libro con ISBN: "+ISBN);
+		}finally {
+			liberar();
+		}
 	}
-
-
-
-
 }
 

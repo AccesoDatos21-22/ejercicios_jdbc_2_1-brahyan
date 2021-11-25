@@ -21,7 +21,10 @@ public class Libro {
 		this.copias = copias;
 	}
 	
-	
+	public String toString() {
+		return "isbn: "+ISBN+", titulo: "+titulo+", autor: "+autor+", editorial: "+editorial+
+				", paginas: "+paginas+", copias: "+copias;
+	}
 
 	public int getISBN() {
 		return ISBN;
