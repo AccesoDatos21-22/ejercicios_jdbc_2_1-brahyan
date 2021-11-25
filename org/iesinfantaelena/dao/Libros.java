@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class Libros {
 	private static final String UPDATE_COPIAS_LIBRO = "update LIBROS set copias=? where isbn=?";
 	private static final String SELECT_ALL_LIBROS = "select * from LIBROS";
 	private static final String SELECT_LIBRO = "select * from LIBROS where isbn=?";
+	private static final String SELECT_CAMPOS_QUERY = "SELECT * FROM LIBROS LIMIT 1";
 	//Variables de instancia
 	private Connection con;
 	private Statement stmt;
@@ -234,8 +236,33 @@ public class Libros {
 	 */
 
 	public String[] getCamposLibro() throws AccesoDatosException {
-       
-    return null;
+		
+    	ResultSetMetaData rsmd = null;          	
+    	String[] campos = null;
+     	try { 
+        	//Solicitamos a la conexion un objeto stmt para nuestra consulta
+        	pstmt = con.prepareStatement(SELECT_CAMPOS_QUERY);
+        	//Le solicitamos al objeto stmt que ejecute nuestra consulta
+        	//y nos devuelve los resultados en un objeto ResultSet
+        	rs = pstmt.executeQuery();
+        	rsmd = rs.getMetaData();
+        	int columns = rsmd.getColumnCount();
+        	campos = new String[columns];
+        	for (int i = 0; i < columns; i++) {
+            	//Los indices de las columnas comienzan en 1
+            	campos[i] = rsmd.getColumnLabel(i + 1);
+        	}
+ 
+    	} catch (SQLException sqle) {
+                 	// En una aplicación real, escribo en el log y delego
+                 	Utilidades.printSQLException(sqle);
+                 	throw new AccesoDatosException(
+                              	"Ocurrió un error al acceder a los datos");
+ 
+          	} finally{
+                 	liberar();
+          	}
+     	return campos;
 	}
 
 

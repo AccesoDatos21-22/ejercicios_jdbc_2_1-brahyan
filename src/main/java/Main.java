@@ -40,6 +40,12 @@ public class Main {
 		    }
 		    //Prueba obtenerLibro
 		    libros.obtenerLibro(1725);
+		    //Prueba getCamposLibro()
+		    System.out.println("\nLos campos de la tabla LIBROS son :");
+		    for(String campo :libros.getCamposLibro()) {
+		    	System.out.print(campo+", ");
+		    }
+		    
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
 			}

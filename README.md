@@ -16,3 +16,9 @@ de algun método teniendo algún valor distinto de null.
 
 No creo que esta nueva versión presente ningún inconveniente respecto a la versión anterior, ya que el código queda algo más modularizado,
 más limpio, y más corto y legible.
+
+## Ejercicio 7
+
+Este método nos aporta metadatos de la tabla LIBROS, es decir información sobre la tabla, y no sobre su contenido.
+
+En este caso a partir de una consulta select conseguimos el nombre de las diferentes columnas (campos)que componen la tabla LIBROS.
