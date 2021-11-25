@@ -29,6 +29,8 @@ public class Libros {
 			+ "(isbn integer not null, titulo varchar(50) not null, autor varchar(50) not null,"
 			+ " editorial varchar(25) not null, paginas integer not null, copias integer not null,"
 			+ " constraint isbn_pk primary key (isbn));";
+	private static final String INSERT_LIBRO = "insert into LIBROS values (?,?,?,?,?,?)";
+	private static final String DELETE_LIBRO = "delete from LIBROS where isbn=?";
 	//Variables de instancia
 	private Connection con;
 	private Statement stmt;
@@ -49,17 +51,15 @@ public class Libros {
 			this.stmt = con.createStatement();
 			stmt.executeUpdate(CREATE_TABLE_LIBROS);
 		} catch (IOException e) {
-			// Error al leer propiedades
-			// En una aplicación real, escribo en el log y delego
+			// Error al leer propiedades, En una aplicación real, escribo en el log y delego
 			System.err.println(e.getMessage());
 			throw new AccesoDatosException("Ocurrió un error al acceder a los datos");
 		} catch (SQLException sqle) {
 			// En una aplicación real, escribo en el log y delego
-			// System.err.println(sqle.getMessage());
 			Utilidades.printSQLException(sqle);
 			throw new AccesoDatosException("Ocurrió un error al acceder a los datos");
 		}finally {
-			liberar();
+			liberar();//liberamos recursos
 		}
 	}
 
@@ -138,6 +138,27 @@ public class Libros {
      */
 	public void anadirLibro(Libro libro) throws AccesoDatosException {
 		
+		try {
+			//Preparacion de la insercion
+			pstmt = con.prepareStatement(INSERT_LIBRO);
+			pstmt.setInt(1, libro.getISBN());
+			pstmt.setString(2, libro.getTitulo());
+			pstmt.setString(3, libro.getAutor());
+			pstmt.setString(4, libro.getEditorial());
+			pstmt.setInt(5, libro.getPaginas());
+			pstmt.setInt(6, libro.getCopias());
+			
+			//Ejecucion de la insercion
+			int rowAffected = pstmt.executeUpdate();
+			//Si se realiza insercion se informa al usuario
+			if(rowAffected>0)
+				System.out.println("El libro "+libro.getTitulo()+" se inserto correctamente");
+		}catch (SQLException e) {
+			Utilidades.printSQLException(e);
+			throw new AccesoDatosException("Error al insertar libro") ;
+		}finally {
+			liberar();
+		}
 	
 	}
 

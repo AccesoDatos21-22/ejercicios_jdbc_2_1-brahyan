@@ -1,7 +1,7 @@
 import iesinfantaelena.dao.Cafes;
 import iesinfantaelena.dao.Libros;
 import iesinfantaelena.modelo.AccesoDatosException;
-import iesinfantaelena.utils.Utilidades;
+import iesinfantaelena.modelo.Libro;
 
 public class Main {
 
@@ -24,7 +24,11 @@ public class Main {
 		    //Prueba conexion sqlite
 		    System.out.println("\n *************Libros***********\n");
 		    Libros libros = new Libros();
-		
+		    //Prueba isertar libros
+		    libros.anadirLibro(new Libro(12345, "Sistemas Operativos", "Tanembaun", "Informática", 156,3));
+		    libros.anadirLibro(new Libro(12453, "Minix", "Stallings", "Informática", 345,4));
+		    libros.anadirLibro(new Libro(1325, "Linux", "Richard Stallman", "FSF", 168,10));
+		    libros.anadirLibro(new Libro(1725, "Java", "Juan Garcia", "Programación", 245,9));
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
 			}
