@@ -1,6 +1,6 @@
-package org.iesinfantaelena.dao;
+package iesinfantaelena.dao;
 
-import org.iesinfantaelena.modelo.AccesoDatosException;
+import iesinfantaelena.modelo.AccesoDatosException;
 
 public interface CafesDAO {
 	

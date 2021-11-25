@@ -1,9 +1,9 @@
-package org.iesinfantaelena.dao;
+package iesinfantaelena.dao;
 
 import java.util.List;
 
-import org.iesinfantaelena.modelo.AccesoDatosException;
-import org.iesinfantaelena.modelo.Libro;
+import iesinfantaelena.modelo.AccesoDatosException;
+import iesinfantaelena.modelo.Libro;
 
 /**
  * 

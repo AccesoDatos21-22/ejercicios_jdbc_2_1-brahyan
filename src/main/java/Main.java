@@ -1,6 +1,7 @@
-import org.iesinfantaelena.dao.Cafes;
-import org.iesinfantaelena.dao.Libros;
-import org.iesinfantaelena.modelo.AccesoDatosException;
+import iesinfantaelena.dao.Cafes;
+import iesinfantaelena.dao.Libros;
+import iesinfantaelena.modelo.AccesoDatosException;
+import iesinfantaelena.utils.Utilidades;
 
 public class Main {
 
@@ -8,6 +9,7 @@ public class Main {
 	
 		
 		try {
+			
 			Cafes cafes = new Cafes();
 		    cafes.insertar("Cafetito", 150, 1.0f, 100,1000);
 		    cafes.insertar("Cafe tacilla", 150, 2.0f, 100,1000);
@@ -18,6 +20,9 @@ public class Main {
 		    cafes.verTabla();
 		    
 		    cafes.cerrarConexion();//Se cierra la conexion
+		    
+		    //Prueba conexion sqlite
+		    Libros libro = new Libros();
 		
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();

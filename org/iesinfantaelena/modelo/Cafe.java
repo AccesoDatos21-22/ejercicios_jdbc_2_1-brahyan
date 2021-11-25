@@ -1,4 +1,4 @@
-package org.iesinfantaelena.modelo;
+package iesinfantaelena.modelo;
 
 public class Cafe {
 	

@@ -1,18 +1,17 @@
-package org.iesinfantaelena.dao;
+package iesinfantaelena.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.iesinfantaelena.modelo.AccesoDatosException;
-import org.iesinfantaelena.modelo.Libro;
-import org.iesinfantaelena.utils.Utilidades;
+import iesinfantaelena.utils.Utilidades;
+import iesinfantaelena.modelo.*;
+
+
 
 
 /**
@@ -42,7 +41,7 @@ public class Libros {
 	public Libros() throws AccesoDatosException {
 		try {
 			// Obtenemos la conexión
-			this.con = new Utilidades().getConnection();
+			this.con = new Utilidades(System.getProperty("user.dir") + "/resources/sqlite-properties.xml").getConnection();
 			this.stmt = null;
 			this.rs = null;
 			this.pstmt = null;

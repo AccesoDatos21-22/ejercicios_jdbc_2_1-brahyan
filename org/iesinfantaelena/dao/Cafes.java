@@ -1,4 +1,4 @@
-package org.iesinfantaelena.dao;
+package iesinfantaelena.dao;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.iesinfantaelena.modelo.AccesoDatosException;
-import org.iesinfantaelena.utils.Utilidades;
+import iesinfantaelena.modelo.AccesoDatosException;
+import iesinfantaelena.utils.Utilidades;
 
 /**
  * @descrition
