@@ -16,6 +16,8 @@ public class Main {
 		    cafes.cafesPorProveedor(150);
 		    cafes.borrar("Cafe tacilla");
 		    cafes.verTabla();
+		    
+		    cafes.cerrarConexion();//Se cierra la conexion
 		
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
