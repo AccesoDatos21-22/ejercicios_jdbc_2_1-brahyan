@@ -25,8 +25,11 @@ import iesinfantaelena.modelo.*;
 public class Libros {
 
 	// Consultas a realizar en BD
-
-
+	private static final String CREATE_TABLE_LIBROS = "create table if not exists LIBROS "
+			+ "(isbn integer not null, titulo varchar(50) not null, autor varchar(50) not null,"
+			+ " editorial varchar(25) not null, paginas integer not null, copias integer not null,"
+			+ " constraint isbn_pk primary key (isbn));";
+	//Variables de instancia
 	private Connection con;
 	private Statement stmt;
 	private ResultSet rs;
@@ -42,36 +45,31 @@ public class Libros {
 		try {
 			// Obtenemos la conexión
 			this.con = new Utilidades(System.getProperty("user.dir") + "/resources/sqlite-properties.xml").getConnection();
-			this.stmt = null;
-			this.rs = null;
-			this.pstmt = null;
+			this.rs = null; this.pstmt = null;
+			this.stmt = con.createStatement();
+			stmt.executeUpdate(CREATE_TABLE_LIBROS);
 		} catch (IOException e) {
 			// Error al leer propiedades
 			// En una aplicación real, escribo en el log y delego
 			System.err.println(e.getMessage());
-			throw new AccesoDatosException(
-					"Ocurrió un error al acceder a los datos");
+			throw new AccesoDatosException("Ocurrió un error al acceder a los datos");
 		} catch (SQLException sqle) {
 			// En una aplicación real, escribo en el log y delego
 			// System.err.println(sqle.getMessage());
 			Utilidades.printSQLException(sqle);
-			throw new AccesoDatosException(
-					"Ocurrió un error al acceder a los datos");
+			throw new AccesoDatosException("Ocurrió un error al acceder a los datos");
+		}finally {
+			liberar();
 		}
 	}
 
-	
 	/**
 	 * Método para cerrar la conexión
 	 * 
 	 * @throws AccesoDatosException
 	 */
 	public void cerrar() {
-					
-			if (con != null) {
-				Utilidades.closeConnection(con);
-			}
-		
+		Utilidades.closeConnection(con);//El metodod ya comprueba que sea nula
 	}
 
 	
@@ -86,12 +84,15 @@ public class Libros {
 			//Al cerrar un stmt se cierran los resultset asociados. Podíamos omitir el primer if. Lo dejamos por claridad.
 			if (rs != null) {
 				rs.close();
+				rs = null;
 			}
 			if (stmt != null) {
 				stmt.close();
+				stmt = null;
 			}
 			if (pstmt != null) {
 				pstmt.close();
+				pstmt = null;
 			}			
 		} catch (SQLException sqle) {
 			// En una aplicación real, escribo en el log, no delego porque

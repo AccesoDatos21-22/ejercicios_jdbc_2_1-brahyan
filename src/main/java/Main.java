@@ -22,7 +22,8 @@ public class Main {
 		    cafes.cerrarConexion();//Se cierra la conexion
 		    
 		    //Prueba conexion sqlite
-		    Libros libro = new Libros();
+		    System.out.println("\n *************Libros***********\n");
+		    Libros libros = new Libros();
 		
 			} catch (AccesoDatosException e) {
 				e.printStackTrace();
